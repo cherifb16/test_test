@@ -1,0 +1,56 @@
+name: Ruby
+
+on:
+  push:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12.1-alpine
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          check-latest: true
+      - name: Install Yarn
+        run: yarn --frozen-lockfile
+      - name: Create Evaluation File
+        run: |
+          echo -e "---\ntitle: DIVE INTO CODE：Notification about the assessment of the assignment\n---\n## The assignment could not be evaluated.\n### Please check the following items.\n- Do you have the necessary gems (rspec-rails and rexml) installed to run RSpec?\n**If the above does not solve the problem, please post the URL of this repository on the DIVER question submission page and let us know that the issue is not being evaluated.**" > .github/execution_error_template.md
+          git clone -b en https://github.com/diveintocode-corp/cdp_web_ruby_oop_task_evaluation_code.git spec
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Create Feedback
+        run: |
+          bundle exec rspec -r ./spec/my_formatter.rb -f MyFormatter -o .github/feedback_template.md
+        continue-on-error: true
+      - name: Rspec Results
+        run: |
+          bundle exec rspec
+        continue-on-error: true
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/feedback_template.md
+      - uses: JasonEtco/create-an-issue@v2
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/execution_error_template.md

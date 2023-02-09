@@ -1,0 +1,49 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (6.1.4.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
+    concurrent-ruby (1.1.9)
+    diff-lcs (1.4.4)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    i18n (1.8.10)
+      concurrent-ruby (~> 1.0)
+    kosi (1.0.1)
+      unicode (>= 0.4.4)
+    minitest (5.14.4)
+    rexml (3.2.5)
+    rspec (3.10.0)
+      rspec-core (~> 3.10.0)
+      rspec-expectations (~> 3.10.0)
+      rspec-mocks (~> 3.10.0)
+    rspec-core (3.10.1)
+      rspec-support (~> 3.10.0)
+    rspec-expectations (3.10.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-mocks (3.10.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-support (3.10.2)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+    unicode (0.4.4.4)
+    zeitwerk (2.4.2)
+
+PLATFORMS
+  arm64-darwin-20
+  x86_64-linux
+
+DEPENDENCIES
+  factory_bot
+  kosi
+  rexml
+  rspec
+
+BUNDLED WITH
+   2.2.21
